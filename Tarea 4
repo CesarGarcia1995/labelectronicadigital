@@ -1,0 +1,70 @@
+# ============================================================
+# 📁 Archivo: src/tarea4.c
+# ============================================================
+
+#include <stdio.h>
+
+int main() {
+    printf("Nombre: César García\n");
+    printf("Carné: 201404154\n");
+    return 0;
+}
+
+
+# ============================================================
+# 📁 Archivo: Dockerfile
+# ============================================================
+
+FROM gcc:latest
+
+WORKDIR /usr/src/app
+
+COPY . .
+
+RUN gcc src/tarea4.c -o tarea4
+
+CMD ["./tarea4"]
+
+
+# ============================================================
+# 📁 Archivo: Makefile
+# ============================================================
+
+IMAGE_NAME = led-c
+CONTAINER_NAME = led_container
+
+build:
+	docker build -t $(IMAGE_NAME) .
+
+run:
+	docker run --name $(CONTAINER_NAME) --rm -it $(IMAGE_NAME)
+
+ps:
+	docker ps
+
+
+# ============================================================
+# 📁 Archivo: README.md
+# ============================================================
+
+# 💡 Tarea 4 - Configuración de un entorno de programación en C con Docker
+
+**Curso:** Electrónica Digital – ECFM  
+**Estudiante:** César García  
+**Carné:** 201404154  
+**Semestre:** Segundo semestre 2025  
+
+---
+
+## 🎯 Objetivos
+1. Configurar un ambiente de programación para C usando Docker.  
+2. Compilar y ejecutar un programa en C dentro de un contenedor.
+
+---
+
+## ⚙️ Instrucciones para ejecutar el programa
+
+### 1️⃣ Construir la imagen Docker
+```bash
+make build
+
