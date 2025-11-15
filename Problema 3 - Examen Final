@@ -1,0 +1,250 @@
+/*************************************************************
+ *                  EJERCICIO 1 - e1.c
+ *   Programa equivalente al Python: pide entero y lo imprime
+ *************************************************************/
+#include <stdio.h>
+#include <string.h>
+
+void ejercicio1() {
+    int val;
+    printf("Ingrese un valor entero\n");
+    scanf("%d", &val);
+    printf("Salida: %d\n", val);
+}
+
+/*************************************************************
+ *                  EJERCICIO 2 - e2.c
+ *  Programa equivalente al Python: pide nombre y saluda
+ *************************************************************/
+void ejercicio2() {
+    char name[100];
+    printf("Ingrese un nombre\n");
+    scanf("%99s", name);
+    printf("Hola %s\n", name);
+}
+
+/*************************************************************
+ *                  EJERCICIO 3 - ejemplo1 modificado
+ *        Conversión Fahrenheit -> Celsius con TÍTULO
+ *************************************************************/
+void ejercicio3() {
+    float fahr, celsius;
+    int lower = 0, upper = 300, step = 20;
+
+    printf("TABLA DE CONVERSION FAHRENHEIT -> CELSIUS\n");
+    printf("Fahr\tCelsius\n");
+
+    for (fahr = lower; fahr <= upper; fahr += step) {
+        celsius = (5.0/9.0) * (fahr - 32.0);
+        printf("%3.0f\t%6.1f\n", fahr, celsius);
+    }
+}
+
+/*************************************************************
+ *          EJERCICIO 4 - Celsius -> Fahrenheit
+ *************************************************************/
+void ejercicio4() {
+    float celsius, fahr;
+    int lower = 0, upper = 100, step = 10;
+
+    printf("TABLA DE CONVERSION CELSIUS -> FAHRENHEIT\n");
+    printf("Celsius\tFahr\n");
+
+    for (celsius = lower; celsius <= upper; celsius += step) {
+        fahr = (celsius * 9.0/5.0) + 32.0;
+        printf("%3.0f\t%6.1f\n", celsius, fahr);
+    }
+}
+
+/*************************************************************
+ *        FUNCIONES AUXILIARES PARA EJERCICIOS 5,6,7
+ *************************************************************/
+#define MAX 2000
+
+int getline2(char s[], int lim) {
+    int c, i = 0;
+    while (i < lim - 1 && (c = getchar()) != EOF && c != '\n')
+        s[i++] = c;
+    if (c == '\n')
+        s[i++] = c;
+    s[i] = '\0';
+    return i;
+}
+
+/*************************************************************
+ *                  EJERCICIO 5 - Trim y borrar líneas vacías
+ *************************************************************/
+void trim(char s[]) {
+    int i = 0;
+    while (s[i] != '\0') i++;
+    i--;
+
+    while (i >= 0 && (s[i] == ' ' || s[i] == '\t' || s[i] == '\n'))
+        i--;
+
+    s[i+1] = '\0';
+}
+
+void ejercicio5() {
+    char line[MAX];
+
+    printf("(Ejercicio 5) Ingrese texto y limpiaré espacios finales:\n");
+
+    while (getline2(line, MAX) > 0) {
+        trim(line);
+        if (line[0] != '\0')
+            printf("%s\n", line);
+    }
+}
+
+/*************************************************************
+ *                  EJERCICIO 6 - líneas > 80 chars
+ *************************************************************/
+void ejercicio6() {
+    char line[MAX];
+    int len;
+
+    printf("(Ejercicio 6) Imprime sólo líneas con más de 80 caracteres:\n");
+
+    while ((len = getline2(line, MAX)) > 0) {
+        if (len > 80)
+            printf("%s", line);
+    }
+}
+
+/*************************************************************
+ *                  EJERCICIO 7 - reverse(s)
+ *************************************************************/
+void reverse(char s[]) {
+    int i, j;
+    char temp;
+    for (i = 0, j = strlen(s) - 1; i < j; i++, j--) {
+        temp = s[i];
+        s[i] = s[j];
+        s[j] = temp;
+    }
+}
+
+void ejercicio7() {
+    char line[MAX];
+    printf("(Ejercicio 7) Invirtiendo líneas:\n");
+
+    while (getline2(line, MAX) > 0) {
+        reverse(line);
+        printf("%s", line);
+    }
+}
+
+/*************************************************************
+ *                  EJERCICIO 8 - convertir múltiples espacios
+ *************************************************************/
+void ejercicio8() {
+    int c, last = 0;
+
+    printf("(Ejercicio 8) Reemplazando múltiples espacios por uno:\n");
+
+    while ((c = getchar()) != EOF) {
+        if (c == ' ') {
+            if (last != ' ')
+                putchar(c);
+        } else {
+            putchar(c);
+        }
+        last = c;
+    }
+}
+
+/*************************************************************
+ *                  EJERCICIO 9 - mostrar tabs y backspaces
+ *************************************************************/
+void ejercicio9() {
+    int c;
+
+    printf("(Ejercicio 9) Visualización de tabs y retrocesos:\n");
+
+    while ((c = getchar()) != EOF) {
+        if (c == '\t') {
+            printf(">- ");
+        } else if (c == '\b') {
+            printf("<- ");
+        } else {
+            putchar(c);
+        }
+    }
+}
+
+/*************************************************************
+ *                  EJERCICIO 10 - Histograma
+ *************************************************************/
+#define MAXWORD 100
+
+void ejercicio10() {
+    int c, len = 0;
+    int hist[MAXWORD] = {0};
+
+    printf("(Ejercicio 10) Histograma de longitudes de palabras:\n");
+
+    while ((c = getchar()) != EOF) {
+        if (c == ' ' || c == '\n' || c == '\t') {
+            if (len > 0 && len < MAXWORD)
+                hist[len]++;
+            len = 0;
+        } else {
+            len++;
+        }
+    }
+
+    for (int i = 1; i < MAXWORD; i++) {
+        if (hist[i] > 0) {
+            printf("%2d: ", i);
+            for (int j = 0; j < hist[i]; j++)
+                printf("*");
+            printf("\n");
+        }
+    }
+}
+
+/*************************************************************
+ *                            MENÚ
+ *************************************************************/
+int main() {
+    int opcion;
+
+    do {
+        printf("\n==============================\n");
+        printf("   MENU DE EJERCICIOS EN C\n");
+        printf("==============================\n");
+        printf("1. Ejercicio 1\n");
+        printf("2. Ejercicio 2\n");
+        printf("3. Ejercicio 3\n");
+        printf("4. Ejercicio 4\n");
+        printf("5. Ejercicio 5\n");
+        printf("6. Ejercicio 6\n");
+        printf("7. Ejercicio 7\n");
+        printf("8. Ejercicio 8\n");
+        printf("9. Ejercicio 9\n");
+        printf("10. Ejercicio 10\n");
+        printf("0. Salir\n");
+        printf("Seleccione una opción: ");
+        scanf("%d", &opcion);
+        getchar(); // limpiar buffer
+
+        switch(opcion) {
+            case 1: ejercicio1(); break;
+            case 2: ejercicio2(); break;
+            case 3: ejercicio3(); break;
+            case 4: ejercicio4(); break;
+            case 5: ejercicio5(); break;
+            case 6: ejercicio6(); break;
+            case 7: ejercicio7(); break;
+            case 8: ejercicio8(); break;
+            case 9: ejercicio9(); break;
+            case 10: ejercicio10(); break;
+            case 0: printf("Saliendo...\n"); break;
+            default: printf("Opción inválida\n");
+        }
+
+    } while (opcion != 0);
+
+    return 0;
+}
